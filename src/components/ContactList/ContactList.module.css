@@ -1,0 +1,8 @@
+.Item {
+  font-weight: 500;
+  font-size: 18px;
+}
+
+.Item:not(:first-child) {
+  margin-top: 5px;
+}

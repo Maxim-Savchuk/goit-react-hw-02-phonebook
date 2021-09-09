@@ -1,10 +1,12 @@
+import { ContactItem } from "components/ContactList/ContactItem"
+
 export const ContactList = ({ contacts }) => {
     return (
         <div>
             <ul>
-                {contacts.map((contact, index) => {
+                {contacts.map(({ id, name, number }) => {
                     return (
-                        <li key={index}>{contact}</li>
+                        <ContactItem key={id} name={name} number={number} />
                     )
                 })}
             </ul>
