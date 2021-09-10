@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { Component } from 'react';
-import s from './ContactForm.module.css';
+
+import { Container, Form, Label, Input, Button } from './ContactForm.styled';
 
 export class ContactForm extends Component {
     state = {
@@ -12,61 +13,64 @@ export class ContactForm extends Component {
         const { name, value } = e.currentTarget;
         this.setState({
             [name]: value,
-        })
-    }
+        });
+    };
 
     handleSubmit = e => {
         e.preventDefault();
-        const { onSubmit } = this.props;
+        const { onSubmit, contacts } = this.props;
         const { name, number } = this.state;
+        const duplicateName = contacts.find(
+            contact => contact.name.toLowerCase() === name.toLowerCase());
+
+        if (duplicateName) {
+            alert(`${name} is already in contacts`);
+            this.setState({ name: '', number: '', });
+            return;
+        }
 
         onSubmit(name, number);
-
-        this.setState({
-            name: '',
-            number: '',
-        });
+        this.setState({ name: '', number: '', });
     };
 
     render() {
         const { name, number } = this.state;
 
         return (
-            <div className={s.Container}>
-                <form className={s.Form} onSubmit={this.handleSubmit}>
-                    <label className={s.Label}>
+            <Container>
+                <Form onSubmit={this.handleSubmit}>
+                    <Label>
                         Name
-                        <input
+                        <Input
                             type="text"
                             name="name"
                             value={name}
                             pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
                             title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
                             required
-                            className={s.Input}
                             onChange={this.handleChange}
                         />
-                    </label>
-                    <label className={s.Label}>
+                    </Label>
+                    <Label>
                         Number
-                        <input
+                        <Input
                             type="tel"
                             name="number"
                             value={number}
                             pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
                             title="Номер телефона должен состоять цифр и может содержать пробелы, тире, круглые скобки и может начинаться с +"
                             required
-                            className={s.Input}
                             onChange={this.handleChange}
                         />
-                    </label>
-                    <button type="submit" className={s.Button}>Add contact</button>
-                </form>
-            </div>
+                    </Label>
+                    <Button type="submit">Add contact</Button>
+                </Form>
+            </Container>
         );
     }
 }
 
 ContactForm.propTypes = {
     onSubmit: PropTypes.func.isRequired,
-}
+    contacts: PropTypes.array,
+};

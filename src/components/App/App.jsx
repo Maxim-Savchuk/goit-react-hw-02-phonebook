@@ -1,10 +1,11 @@
 import { Component } from 'react';
 import shortid from 'shortid';
-import { ContactForm } from 'components/ContactForm/ContactForm';
-import { Filter } from 'components/Filter/Filter';
-import { ContactList } from 'components/ContactList/ContactList';
 
-import s from './App.module.css';
+import { ContactForm } from 'components/ContactForm';
+import { Filter } from 'components/Filter';
+import { ContactList } from 'components/ContactList';
+
+import { Container, PhonebookTitle, ContactsTitle } from './App.styled';
 
 
 export class App extends Component {
@@ -30,6 +31,12 @@ export class App extends Component {
     }));
   };
 
+  deleteContact = contactId => {
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(contact => contact.id !== contactId),
+    }))
+  }
+
   changeFilter = e => {
     this.setState({
       filter: e.currentTarget.value,
@@ -45,16 +52,17 @@ export class App extends Component {
       contact.name.toLowerCase().includes(normalizedFilter));
 
     return (
-      <div className={s.Container}>
-        <h1 className={s.PhonebookTitle}>Phonebook</h1>
+      <Container>
+        <PhonebookTitle>Phonebook</PhonebookTitle>
         <ContactForm
+          contacts={filterContacts}
           onSubmit={this.addContact}
         />
 
-        <h2>Contacts</h2>
+        <ContactsTitle>Contacts</ContactsTitle>
         <Filter filter={filter} onChange={this.changeFilter} />
-        <ContactList contacts={filterContacts} />
-      </div>
+        <ContactList contacts={filterContacts} onDeleteContact={this.deleteContact} />
+      </Container>
     )
   }
 }

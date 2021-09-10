@@ -1,14 +1,13 @@
-import s from './Filter.module.css';
+import { Label, Input } from './Filter.styled';
 
 export const Filter = ({ filter, onChange }) => {
     return (
-        <label className={s.label}>
+        <Label>
             Filter contacts by name
-            <input
+            <Input
                 type="text"
                 value={filter}
-                onChange={onChange}
-                className={s.Input} />
-        </label>
-    )
-}
+                onChange={onChange} />
+        </Label>
+    );
+};
