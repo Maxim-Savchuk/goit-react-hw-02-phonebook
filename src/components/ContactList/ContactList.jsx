@@ -16,7 +16,7 @@ export const ContactList = ({ contacts, onDeleteContact }) => {
                             >Delete</Button>
                         </Item>
                     );
-                })};
+                })}
             </ul>
         </div>
     );
